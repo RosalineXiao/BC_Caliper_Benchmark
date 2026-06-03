@@ -1,0 +1,25 @@
+test:
+    name: basic-contract-benchmark
+    description: test benchmark
+    workers:
+      number: 50
+    rounds:
+      - label: industrialMetaverseAssetManagement
+        description: Asset benchmark
+        txDuration: 60
+        rateControl:
+          type: fixed-load
+          opts:
+            transactionLoad: 100
+        workload:
+          module: workload/readAsset.js
+          arguments:
+            assets: 10
+            contractId: basic
+monitors:
+  resource:
+  - module: process
+    options:
+      interval: 1
+      processes: [{ command: 'node', multiOutput: 'avg' }]
+

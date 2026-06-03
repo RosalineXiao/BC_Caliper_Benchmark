@@ -1,0 +1,68 @@
+test:
+    name: basic-contract-benchmark
+    description: Test benchmark for private blockchain asset management
+    workers:
+      number: 10
+    rounds:
+    - label: create-assets
+      description: Create new assets
+      txDuration: 100
+      rateControl:
+        type: fixed-load
+        opts:
+          transactionLoad: 50
+      workload:
+        module: workload/asset-workload.js
+        arguments:
+          contractId: basic
+          txnType: create
+          assets: 100
+
+    - label: read-assets
+      description: Read existing assets
+      txDuration: 100
+      rateControl:
+        type: fixed-load
+        opts:
+          transactionLoad: 50
+      workload:
+        module: workload/asset-workload.js
+        arguments:
+          contractId: basic
+          txnType: read
+          assets: 100
+
+    - label: update-assets
+      description: Update existing assets
+      txDuration: 100
+      rateControl:
+        type: fixed-load
+        opts:
+          transactionLoad: 50
+      workload:
+        module: workload/asset-workload.js
+        arguments:
+          contractId: basic
+          txnType: update
+          assets: 100
+
+    - label: delete-assets
+      description: Delete existing assets
+      txDuration: 100
+      rateControl:
+        type: fixed-load
+        opts:
+          transactionLoad: 50
+      workload:
+        module: workload/asset-workload.js
+        arguments:
+          contractId: basic
+          txnType: delete
+          assets: 100
+monitors:
+  resource:
+  - module: process
+    options:
+      interval: 1
+      skipMissing: true
+      processes: [{ command: 'node', multiOutput: 'avg' }]
